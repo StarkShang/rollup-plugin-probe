@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import cheerio from "cheerio";
 import { promises } from "fs";
 import { parse, resolve } from "path";
@@ -9,7 +10,6 @@ export class Reporter {
     public entryName = "";
 
     constructor(options: InputOptions) {
-        console.log(options.input);
         if (typeof options.input === "string") {
             this.entryName = parse(options.input).name;
         } else if (Array.isArray(options.input)) {
@@ -38,7 +38,7 @@ export class Reporter {
             this.entryName
                 ? `${this.entryName}.report.html`
                 : "report.html");
-        console.log("generate report to", outputPath);
+        console.log(chalk.blue("Generate reports to: ", outputPath));
         await promises.writeFile(
             outputPath,
             this.$.html(),
@@ -46,5 +46,21 @@ export class Reporter {
                 encoding: "utf8"
             }
         );
+    }
+}
+
+export function getValueInfo(value: any) {
+    if (typeof value === "string") {
+        return `<ul style="margin:0"><li>${value}</li></ul>`;
+    } else if (Array.isArray(value)) {
+        return `
+        <ul>
+            ${value.map(i => `<li>${i}</li>`)}
+        </ul>`;
+    } else if (value) {
+        return `
+        <ul style="margin:0">
+            ${Object.keys(value).map(key => `<li>${key}:${value[key]}</li>`)}
+        </ul>`;
     }
 }

@@ -15,7 +15,7 @@ export function generateBundleProbe(
 ) {
     reporter.append(`
         <section>
-            <h3>
+            <h3 style="margin:2em 0 0">
                 Generate Bundle
                 <small>${moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}</small>
             </h3>
@@ -43,9 +43,9 @@ function getChunkInfo(bundle: OutputBundle) {
             `;})
         .reduce((html, tr) => html + tr, "");
     return `
-        <table style="width:100%">
-            <caption style="font-size:1.5em;font-weight:700;margin-top:0.5em">Chunks</caption>
-            <tr>
+        <table style="width:100%;line-height:3em;border:1px solid #ebeef5">
+            <caption style="text-align:left;font-size:1.1em;line-height:1.5em;font-weight:700;margin-top:0.5em">Chunks</caption>
+            <tr style="background:#ebeef5">
                 <th>key</th>
                 <th>fileName</th>
                 <th>isEntry</th>
@@ -70,9 +70,9 @@ function getAssetInfo(bundle: OutputBundle) {
             `;})
         .reduce((html, tr) => html + tr, "");
     return `
-        <table style="width:100%">
-            <caption style="font-size:1.5em;font-weight:700;margin-top:0.5em">Assets</caption>
-            <tr>
+        <table style="width:100%;line-height:3em;border:1px solid #ebeef5">
+            <caption style="text-align:left;font-size:1.1em;line-height:1.5em;font-weight:700;margin-top:0.5em">Assets</caption>
+            <tr style="background:#ebeef5">
                 <th>key</th>
                 <th>name</th>
                 <th>fileName</th>

@@ -55,7 +55,7 @@ export default function(
         },
         transform(code, id) {
             if (pluginOptions?.transform) {
-                transformProbe.call(this, code, id);
+                transformProbe.call(this, code, id, reporter);
             }
             return null;
         },
