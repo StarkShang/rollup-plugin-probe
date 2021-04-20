@@ -1,0 +1,42 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "strict": true,
+        "jsx": "preserve",
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "declaration": true,
+        "declarationDir": "types",
+        "emitDeclarationOnly": false,
+        "noEmit": false,
+        "lib": [
+            "esnext",
+            "DOM"
+        ],
+        "importHelpers": true,
+        "removeComments": true,
+        "forceConsistentCasingInFileNames": true,
+        "experimentalDecorators": true,
+        // 解析非相对模块名的基准目录
+        "baseUrl": ".",
+        // 指定特殊模块的路径
+        "paths": {
+            "@/*": ["src/*"],
+            "@stories/*": [ "stories/*" ],
+        },
+    },
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.d.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue"
+    ],
+    "exclude": [
+        "**/dist",
+        "node_modules",
+        "**/node_modules",
+    ],
+}

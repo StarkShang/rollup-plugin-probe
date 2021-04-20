@@ -1,0 +1,11 @@
+example
+node_modules
+src
+.editorconfig
+.gitignore
+.npmignore
+package-lock.json
+README.md
+rollup.config.ts
+tsconfig.dev.json
+tsconfig.json
