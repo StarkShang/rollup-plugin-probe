@@ -19,24 +19,28 @@ export function generateBundleProbe(
                 Generate Bundle
                 <small>${moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}</small>
             </h3>
-            ${getBundleInfo(bundle)}
+            ${describeBundleInfo(bundle, reporter)}
         </section>
     `);
 }
 
-function getBundleInfo(bundle: OutputBundle) {
-    return getChunkInfo(bundle) + getAssetInfo(bundle);
+function describeBundleInfo(bundle: OutputBundle, reporter: Reporter) {
+    return getChunkInfo(bundle, reporter) + getAssetInfo(bundle, reporter);
 }
 
-function getChunkInfo(bundle: OutputBundle) {
+function getChunkInfo(bundle: OutputBundle, reporter: Reporter) {
     const bundleInfo = Object.keys(bundle)
         .filter(key => bundle[key].type === "chunk")
         .map(key => {
             const chunk = bundle[key] as OutputChunk;
+            const chunkDescriber = reporter.registerChunkDescriber(chunk);
+            chunkDescriber.append(`
+                ${chunk.fileName}
+            `);
             return `
                 <tr>
                     <th>${key}</th>
-                    <th>${chunk.fileName}</th>
+                    <th><a href="${chunkDescriber.filename}">${chunk.fileName}</a></th>
                     <th>${chunk.isEntry}</th>
                     <th>${chunk.isDynamicEntry}</th>
                 </tr>
@@ -56,7 +60,7 @@ function getChunkInfo(bundle: OutputBundle) {
     `;
 }
 
-function getAssetInfo(bundle: OutputBundle) {
+function getAssetInfo(bundle: OutputBundle, reporter: Reporter) {
     const bundleInfo = Object.keys(bundle)
         .filter(key => bundle[key].type === "asset")
         .map(key => {

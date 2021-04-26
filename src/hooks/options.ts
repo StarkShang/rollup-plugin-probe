@@ -38,7 +38,7 @@ function getPluginInfos(plugins?: Plugin[]) {
                 <span style="font-weight:700">${plugin.name}: </span>
                 ${Object.keys(plugin)
                     .filter(key => key!=="name")
-                    .map(key => `<span style="display:inline-block;line-height:1.5em;padding:0.1em 0.5em;border-radius:4px;background:#5CAAFB;color:white">${key}</span>`)
+                    .map(key => `<span style="display:inline-block;line-height:1.5em;padding:0.1em 0.5em;border-radius:4px;background:#5CAAFB;color:white;font-size:0.8em">${key}</span>`)
                     .join(" ")}
             </li>
         `;

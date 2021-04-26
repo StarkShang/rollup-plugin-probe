@@ -24,7 +24,7 @@ import { TransformProbeOptions } from "./hooks/transform";
 import { WatchChangeProbeOptions } from "./hooks/watchChange";
 import { WriteBundleProbeOptions } from "./hooks/writeBundle";
 
-export interface WorkflowVisualizerOptions {
+export interface HooksOptions {
     options?: OptionsProbeOptions;
     buildStart?: BuildStartProbeOptions;
     resolveId?: ResolveIdProbeOptions;
@@ -50,4 +50,26 @@ export interface WorkflowVisualizerOptions {
     renderError?: RenderErrorProbeOptions;
     generateBundle?: GenerateBundleProbeOptions;
     writeBundle?: WriteBundleProbeOptions;
+}
+
+export interface ProbeOptions {
+    output?: string;
+    hooks?: HooksOptions;
+}
+
+export interface NormalizedProbeOptions {
+    output: string;
+    hooks: HooksOptions;
+}
+
+export const defaultOptions: NormalizedProbeOptions = {
+    output: "report",
+    hooks: {}
+};
+
+export function normalizeOptions(options?: ProbeOptions) {
+    return {
+        ...defaultOptions,
+        ...options
+    }
 }

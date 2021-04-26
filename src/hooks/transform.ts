@@ -12,8 +12,6 @@ export function transformProbe(
     id: string,
     reporter: Reporter,
 ) {
-    console.log("transform", code);
-    console.log("transform", id);
     reporter.append(`
         <section>
             <h3 style="margin:2em 0 0">
@@ -24,7 +22,7 @@ export function transformProbe(
                 <span style="background:#FFA754;color:white;border-radius:4px;margin-right:0.5em;padding:0.1em 0.5em">source</span>
                 ${id}
             </h4>
-            <pre style="padding:0.5em;background:#eee;border-radius:3px;line-height:1.5em;max-height:6em;overflow-y:auto;">${code}</pre>
+            <pre style="padding:0.5em;background:#eee;border-radius:3px;line-height:1.5em;max-height:20em;overflow-y:auto;">${code}</pre>
         </section>
     `);
 }

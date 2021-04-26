@@ -1,5 +1,6 @@
+import { join } from "path";
 import { Plugin } from "rollup";
-import { WorkflowVisualizerOptions } from "./options";
+import { normalizeOptions, ProbeOptions } from "./options";
 import { buildStartProbe } from "./hooks/buildStart";
 import { closeBundleProbe } from "./hooks/closeBundle";
 import { renderStartProbe } from "./hooks/renderStart";
@@ -24,128 +25,128 @@ import { outputOptionsProbe } from "./hooks/outputOptions";
 import { Reporter } from "./report";
 
 export default function(
-    pluginOptions?: WorkflowVisualizerOptions
+    inputOptions?: ProbeOptions
 ): Plugin {
-    let reporter: Reporter;
+    const _options = normalizeOptions(inputOptions);
+    const _reporter = new Reporter();
     return {
         name: "rollup-probe",
         options(options) {
-            reporter = new Reporter(options);
-            if (pluginOptions?.options) {
-                optionsProbe.call(this, options, reporter);
+            if (_options?.hooks?.options) {
+                optionsProbe.call(this, options, _reporter);
             }
             return options;
         },
         buildStart(options) {
-            if (pluginOptions?.buildStart) {
+            if (_options?.hooks?.buildStart) {
                 buildStartProbe.call(this, options);
             }
         },
         resolveId(source, importer, options) {
-            if (pluginOptions?.resolveId) {
+            if (_options?.hooks?.resolveId) {
                 resolveIdProbe.call(this, source, importer, options);
             }
             return null;
         },
         load(id: string) {
-            if (pluginOptions?.load) {
+            if (_options?.hooks?.load) {
                 loadProbe.call(this, id);
             }
             return null;
         },
         transform(code, id) {
-            if (pluginOptions?.transform) {
-                transformProbe.call(this, code, id, reporter);
+            if (_options?.hooks?.transform) {
+                transformProbe.call(this, code, id, _reporter);
             }
             return null;
         },
         moduleParsed(info) {
-            if (pluginOptions?.moduleParsed) {
+            if (_options?.hooks?.moduleParsed) {
                 moduleParsedProbe.call(this, info);
             }
         },
         resolveDynamicImport(specifier, importer) {
-            if (pluginOptions?.resolveDynamicImport) {
+            if (_options?.hooks?.resolveDynamicImport) {
                 resolveDynamicImportProbe.call(this, specifier, importer);
             }
             return null;
         },
         buildEnd(err) {
-            if (pluginOptions?.buildEnd) {
+            if (_options?.hooks?.buildEnd) {
                 buildEndProbe.call(this, err);
             }
         },
         closeBundle() {
-            if (pluginOptions?.closeBundle) {
+            if (_options?.hooks?.closeBundle) {
                 closeBundleProbe.call(this);
             }
         },
         watchChange(id, change) {
-            if (pluginOptions?.watchChange) {
+            if (_options?.hooks?.watchChange) {
                 watchChangeProbe.call(this, id, change);
             }
         },
         closeWatcher() {
-            if (pluginOptions?.closeWatcher) {
+            if (_options?.hooks?.closeWatcher) {
                 closeWatcherProbe.call(this);
             }
         },
         outputOptions(options) {
             if (options.dir) {
-                reporter.setOutputPath(options.dir);
+                _reporter.setOutputPath(join(options.dir, _options.output));
             }
-            if (pluginOptions?.outputOption) {
-                outputOptionsProbe.call(this, options, reporter);
+            if (_options?.hooks?.outputOption) {
+                outputOptionsProbe.call(this, options, _reporter);
             }
             return null;
         },
         renderStart(outputOptions, inputOptions) {
-            if (pluginOptions?.renderStart) {
+            if (_options?.hooks?.renderStart) {
                 renderStartProbe.call(this, outputOptions, inputOptions);
             }
         },
         renderDynamicImport(options) {
-            if (pluginOptions?.renderDynamicImport) {
+            if (_options?.hooks?.renderDynamicImport) {
                 renderDynamicImportProbe.call(this, options);
             }
             return null;
         },
         augmentChunkHash(chunk) {
-            if (pluginOptions?.augmentChunkHash) {
+            if (_options?.hooks?.augmentChunkHash) {
                 augmentChunkHashProbe.call(this, chunk);
             }
         },
         resolveFileUrl(options) {
-            if (pluginOptions?.resolveFileUrl) {
+            if (_options?.hooks?.resolveFileUrl) {
                 resolveFileUrlProbe.call(this, options);
             }
             return null;
         },
         resolveImportMeta(prop, options) {
-            if (pluginOptions?.resolveImportMeta) {
+            if (_options?.hooks?.resolveImportMeta) {
                 resolveImportMetaProbe.call(this, prop, options);
             }
             return null;
         },
         renderChunk(code, chunk, options) {
-            if (pluginOptions?.renderChunk) {
+            if (_options?.hooks?.renderChunk) {
                 renderChunkProbe.call(this, code, chunk, options);
             }
             return null;
         },
         renderError(err) {
-            if (pluginOptions?.renderError) {
+            if (_options?.hooks?.renderError) {
                 renderErrorProbe.call(this, err);
             }
         },
         async generateBundle(options, bundle, isWrite) {
-            if (pluginOptions?.generateBundle) {
-                generateBundleProbe.call(this, options, bundle, isWrite, reporter);
+            if (_options?.hooks?.generateBundle) {
+                generateBundleProbe.call(this, options, bundle, isWrite, _reporter);
             }
-            await reporter.output();
+            await _reporter.output();
         },
         async writeBundle(options, bundle) {
-            if (pluginOptions?.writeBundle) {
+            if (_options?.hooks?.writeBundle) {
                 writeBundleProbe.call(this, options, bundle);
             }
         }
