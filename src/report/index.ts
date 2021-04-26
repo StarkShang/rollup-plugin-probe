@@ -2,7 +2,7 @@ import chalk from "chalk";
 import cheerio from "cheerio";
 import { promises, existsSync, mkdirSync } from "fs";
 import { basename, dirname, join, parse, resolve } from "path";
-import { InputOptions, OutputChunk } from "rollup";
+import { InputOptions, OutputChunk, Plugin } from "rollup";
 
 export class Reporter {
     public $ = cheerio.load("");
@@ -33,7 +33,6 @@ export class Reporter {
     public async output() {
         await Promise.all(this.describers.map(async describer => {
             const reportFile = parse(resolve(this.outputPath, describer.filename));
-            console.log(reportFile);
             if (!existsSync(reportFile.dir)) {
                 mkdirSync(reportFile.dir, { recursive:true });
             }
@@ -65,7 +64,7 @@ export function getValueInfo(value: any) {
 }
 
 export class Describer {
-    private $: cheerio.Root;
+    public $: cheerio.Root;
 
     public constructor(public filename: string, $?: cheerio.Root) {
         this.$ = $ || cheerio.load("");
@@ -73,6 +72,19 @@ export class Describer {
 
     public append(domString: string) {
         this.$("body").append(domString);
+    }
+
+    public appendPluginInfo(plugin: Plugin) {
+        const hookInfo = Object.keys(plugin)
+            .filter(key => key!=="name")
+            .map(key => `
+                <span style="display:inline-block;line-height:1.5em;padding:0.1em 0.5em;border-radius:4px;background:#5CAAFB;color:white;font-size:0.8em">
+                    ${key}
+                </span>`)
+            .join(" ");
+        this.append(`
+            <span style="font-weight:700">${plugin.name}: </span>${hookInfo}
+        `);
     }
 
     public toString() {

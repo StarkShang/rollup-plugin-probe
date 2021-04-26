@@ -39,7 +39,7 @@ export default function(
         },
         buildStart(options) {
             if (_options?.hooks?.buildStart) {
-                buildStartProbe.call(this, options);
+                buildStartProbe.call(this, options, _reporter);
             }
         },
         resolveId(source, importer, options) {

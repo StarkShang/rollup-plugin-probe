@@ -1,6 +1,6 @@
 import { NormalizedOutputOptions, OutputAsset, OutputBundle, OutputChunk, PluginContext } from "rollup";
 import moment from "moment";
-import { Reporter } from "../report";
+import { Describer, Reporter } from "../report";
 
 export interface GenerateBundleProbeOptions {
 
@@ -33,14 +33,12 @@ function getChunkInfo(bundle: OutputBundle, reporter: Reporter) {
         .filter(key => bundle[key].type === "chunk")
         .map(key => {
             const chunk = bundle[key] as OutputChunk;
-            const chunkDescriber = reporter.registerChunkDescriber(chunk);
-            chunkDescriber.append(`
-                ${chunk.fileName}
-            `);
+            const describer = reporter.registerChunkDescriber(chunk);
+            getChunkDetail(chunk, describer);
             return `
                 <tr>
                     <th>${key}</th>
-                    <th><a href="${chunkDescriber.filename}">${chunk.fileName}</a></th>
+                    <th><a href="${describer.filename}">${chunk.fileName}</a></th>
                     <th>${chunk.isEntry}</th>
                     <th>${chunk.isDynamicEntry}</th>
                 </tr>
@@ -84,4 +82,37 @@ function getAssetInfo(bundle: OutputBundle, reporter: Reporter) {
             ${bundleInfo}
         </table>
     `;
+}
+
+function getChunkDetail(chunk: OutputChunk, describer: Describer) {
+    const importInfo = chunk.imports.map(imp => `
+        <span>${imp}</span>: [${chunk.importedBindings[imp].join(", ")}]
+    `).reduce((rst, imp) => rst + imp, "");
+    const moduleInfo = Object.keys(chunk.modules).map(key => `
+        <div>${key}</div>
+    `).reduce((rst, module) => rst + module, "");
+    describer.append(`
+        <h1>${chunk.fileName}</h1>
+        <div>facadeModuleId: <a href="${chunk.facadeModuleId}">${chunk.facadeModuleId}</a></div>
+        <div>
+            <span>
+                <input type="checkbox" ${chunk.isEntry?"checked":""} disabled>isEntry
+            </span>
+            <span>
+                <input type="checkbox" ${chunk.isDynamicEntry?"checked":""} disabled>isDynamicEntry
+            </span>
+            <span>
+                <input type="checkbox" ${chunk.isImplicitEntry?"checked":""} disabled>isImplicitEntry
+            </span>
+        </div>
+        <div></div>
+        <div>
+            <h3>Imports</h3>
+            ${importInfo}
+        </div>
+        <div>
+            <h3>Modules</h3>
+            ${moduleInfo}
+        </div>
+    `);
 }
