@@ -16,6 +16,7 @@ export default defineConfig({
                 renderStart: {},
                 renderChunk: {},
                 generateBundle: {},
+                writeBundle: {},
             }
         }),
     ]

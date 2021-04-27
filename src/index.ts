@@ -143,12 +143,12 @@ export default function(
             if (_options?.hooks?.generateBundle) {
                 generateBundleProbe.call(this, options, bundle, isWrite, _reporter);
             }
-            await _reporter.output();
         },
         async writeBundle(options, bundle) {
             if (_options?.hooks?.writeBundle) {
-                writeBundleProbe.call(this, options, bundle);
+                writeBundleProbe.call(this, _reporter, options, bundle);
             }
+            await _reporter.output();
         }
     }
 }
