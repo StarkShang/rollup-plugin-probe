@@ -102,7 +102,7 @@ export default function(
         },
         renderStart(outputOptions, inputOptions) {
             if (_options?.hooks?.renderStart) {
-                renderStartProbe.call(this, outputOptions, inputOptions);
+                renderStartProbe.call(this, _reporter, outputOptions, inputOptions);
             }
         },
         renderDynamicImport(options) {

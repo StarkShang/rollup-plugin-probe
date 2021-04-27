@@ -10,5 +10,5 @@ export function buildEndProbe(
     reporter: Reporter,
     err?: Error,
 ) {
-    console.log("buildEnd", err);
+    // console.log("buildEnd", err);
 }

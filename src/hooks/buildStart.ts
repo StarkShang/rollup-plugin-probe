@@ -12,7 +12,7 @@ export function buildStartProbe(
     options: NormalizedInputOptions,
     reporter: Reporter,
 ) {
-    console.log("buildStart", options);
+    // console.log("buildStart", options);
     reporter.append(`
         <section>
             <h3 style="margin:2em 0 0">
