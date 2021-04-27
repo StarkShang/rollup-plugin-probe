@@ -1,7 +1,7 @@
 import { NormalizedOutputOptions, OutputAsset, OutputBundle, OutputChunk, PluginContext } from "rollup";
-import moment from "moment";
 import { Reporter } from "../report";
 import { ChunkDescriber } from "../report/chunk.describer";
+import { describeHookMetaInfo } from "../report/hook.describer";
 
 export interface GenerateBundleProbeOptions {
 
@@ -15,11 +15,8 @@ export function generateBundleProbe(
     reporter: Reporter,
 ) {
     reporter.append(`
-        <section>
-            <h3 style="margin:2em 0 0">
-                Generate Bundle
-                <small>${moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}</small>
-            </h3>
+        <section style="box-shadow:0 0 3px 0 #ccc;border-radius:6px;padding:1em;margin:1em">
+            ${describeHookMetaInfo("Generate Bundle Hook")}
             ${describeBundleInfo(bundle, reporter)}
         </section>
     `);

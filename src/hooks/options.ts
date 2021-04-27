@@ -2,6 +2,7 @@ import { InputOption, InputOptions, MinimalPluginContext, Plugin } from "rollup"
 import moment from "moment";
 import { Reporter, getValueInfo } from "../report";
 import { describePlugins } from "../report/plugin.describer";
+import { describeHookMetaInfo } from "../report/hook.describer";
 
 export interface OptionsProbeOptions {
 
@@ -13,11 +14,8 @@ export function optionsProbe(
     reporter: Reporter,
 ) {
     reporter.append(`
-        <section>
-            <h3 style="margin:2em 0 0">
-                Options
-                <small>${moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}</small>
-            </h3>
+        <section style="box-shadow:0 0 3px 0 #ccc;border-radius:6px;padding:1em;margin:1em">
+            ${describeHookMetaInfo("Options Hook")}
             ${getInputInfo(options.input)}
             ${describePlugins(options.plugins)}
         </section>

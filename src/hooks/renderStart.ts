@@ -15,8 +15,8 @@ export function renderStartProbe(
     inputOptions: NormalizedInputOptions,
 ) {
     reporter.append(`
-        <section>
-            ${describeHookMetaInfo("Render Start")}
+        <section style="box-shadow:0 0 3px 0 #ccc;border-radius:6px;padding:1em;margin:1em">
+            ${describeHookMetaInfo("Render Start Hook")}
             ${describeInputOptions(inputOptions)}
             ${describeOutputOptions(outputOptions)}
         </section>

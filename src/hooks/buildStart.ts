@@ -1,7 +1,7 @@
-import moment from "moment";
 import { NormalizedInputOptions, PluginContext } from "rollup";
 import { Reporter } from "@/report";
 import { describeInputOptions } from "../report/inputOptions.describer";
+import { describeHookMetaInfo } from "../report/hook.describer";
 
 export interface BuildStartProbeOptions {
 
@@ -14,11 +14,8 @@ export function buildStartProbe(
 ) {
     // console.log("buildStart", options);
     reporter.append(`
-        <section>
-            <h3 style="margin:2em 0 0">
-                Build Start
-                <small>${moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}</small>
-            </h3>
+        <section style="box-shadow:0 0 3px 0 #ccc;border-radius:6px;padding:1em;margin:1em">
+            ${describeHookMetaInfo("Build Start Hook")}
             ${describeInputOptions(options)}
         </section>
     `);

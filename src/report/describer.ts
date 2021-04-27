@@ -12,6 +12,6 @@ export class Describer {
     }
 
     public toString() {
-        return this.$.html();
+        return this.$.html().replace(/ {2,}/g, "");
     }
 }

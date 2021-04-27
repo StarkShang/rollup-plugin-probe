@@ -1,4 +1,3 @@
-import cheerio from "cheerio";
 import { promises, existsSync, mkdirSync } from "fs";
 import { parse, resolve } from "path";
 import { Describer } from "./describer";

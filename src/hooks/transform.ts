@@ -1,6 +1,6 @@
 import { TransformPluginContext } from "rollup";
-import moment from "moment";
 import { Reporter } from "../report";
+import { describeHookMetaInfo } from "../report/hook.describer";
 
 export interface TransformProbeOptions {
 
@@ -13,11 +13,8 @@ export function transformProbe(
     reporter: Reporter,
 ) {
     reporter.append(`
-        <section>
-            <h3 style="margin:2em 0 0">
-                Transform
-                <small>${moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}</small>
-            </h3>
+        <section style="box-shadow:0 0 3px 0 #ccc;border-radius:6px;padding:1em;margin:1em">
+            ${describeHookMetaInfo("Transform Hook")}
             <h4 style="margin:0.5em 0 0"></h4>
                 <span style="background:#FFA754;color:white;border-radius:4px;margin-right:0.5em;padding:0.1em 0.5em">source</span>
                 ${id}

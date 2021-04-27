@@ -1,6 +1,6 @@
 import { OutputOptions, PluginContext } from "rollup";
-import moment from "moment";
 import { Reporter, getValueInfo } from "../report";
+import { describeHookMetaInfo } from "../report/hook.describer";
 
 export interface OutputOptionsProbeOptions {
 
@@ -19,11 +19,8 @@ export function outputOptionsProbe(
         </div>`;
     });
     reporter.append(`
-        <section>
-            <h3 style="margin:2em 0 0">
-                Output Options
-                <small>${moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}</small>
-            </h3>
+        <section style="box-shadow:0 0 3px 0 #ccc;border-radius:6px;padding:1em;margin:1em">
+            ${describeHookMetaInfo("Output Options Hook")}
             ${optionInfo}
         </section>
     `);
