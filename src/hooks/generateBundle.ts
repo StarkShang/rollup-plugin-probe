@@ -1,6 +1,7 @@
 import { NormalizedOutputOptions, OutputAsset, OutputBundle, OutputChunk, PluginContext } from "rollup";
 import moment from "moment";
-import { Describer, Reporter } from "../report";
+import { Reporter } from "../report";
+import { ChunkDescriber } from "../report/chunk.describer";
 
 export interface GenerateBundleProbeOptions {
 
@@ -33,7 +34,8 @@ function getChunkInfo(bundle: OutputBundle, reporter: Reporter) {
         .filter(key => bundle[key].type === "chunk")
         .map(key => {
             const chunk = bundle[key] as OutputChunk;
-            const describer = reporter.registerChunkDescriber(chunk);
+            const describer = new ChunkDescriber(chunk);
+            reporter.registerDescriber(describer);
             getChunkDetail(chunk, describer);
             return `
                 <tr>
@@ -84,7 +86,7 @@ function getAssetInfo(bundle: OutputBundle, reporter: Reporter) {
     `;
 }
 
-function getChunkDetail(chunk: OutputChunk, describer: Describer) {
+function getChunkDetail(chunk: OutputChunk, describer: ChunkDescriber) {
     const importInfo = chunk.imports.map(imp => `
         <span>${imp}</span>: [${chunk.importedBindings[imp].join(", ")}]
     `).reduce((rst, imp) => rst + imp, "");

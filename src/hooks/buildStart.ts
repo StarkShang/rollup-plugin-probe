@@ -1,6 +1,7 @@
 import moment from "moment";
 import { NormalizedInputOptions, PluginContext } from "rollup";
 import { Reporter } from "@/report";
+import { describeInputOptions } from "../report/inputOptions.describer";
 
 export interface BuildStartProbeOptions {
 
@@ -18,16 +19,16 @@ export function buildStartProbe(
                 Build Start
                 <small>${moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}</small>
             </h3>
-            ${describeInputOptions(options, reporter)}
+            ${describeInputOptions(options)}
         </section>
     `);
 }
 
-function describeInputOptions(
-    options: NormalizedInputOptions,
-    reporter: Reporter,
-) {
-    reporter.append(`
-        <div></div>
-    `);
-}
+// function describeInputOptions(
+//     options: NormalizedInputOptions,
+//     reporter: Reporter,
+// ) {
+//     reporter.append(`
+//         <div></div>
+//     `);
+// }

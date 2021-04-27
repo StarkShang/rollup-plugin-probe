@@ -6,8 +6,9 @@
     "module": "lib/es/index.js",
     "types": "types/index.d.ts",
     "scripts": {
-        "dev": "ts-node --project tsconfig.dev.json example/index.ts",
+        "dev": "rollup -c rollup.config.ts -w",
         "build": "rollup -c rollup.config.ts",
+        "build:example": "ts-node --project tsconfig.dev.json example/index.ts",
         "build:types": "tsc"
     },
     "keywords": [],

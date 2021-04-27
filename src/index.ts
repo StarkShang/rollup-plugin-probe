@@ -73,7 +73,7 @@ export default function(
         },
         buildEnd(err) {
             if (_options?.hooks?.buildEnd) {
-                buildEndProbe.call(this, err);
+                buildEndProbe.call(this, _reporter, err);
             }
         },
         closeBundle() {

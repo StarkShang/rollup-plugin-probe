@@ -6,10 +6,16 @@ rollup({
     input: path.resolve(__dirname, "src/main.ts"),
     plugins: [
         probe({
-            options: {},
-            transform: {},
-            outputOption: {},
-            generateBundle: {},
+            hooks: {
+                options: {},
+                buildStart: {},
+                transform: {},
+                buildEnd: {},
+                outputOption: {},
+                renderStart: {},
+                renderChunk: {},
+                generateBundle: {},
+            }
         })
     ],
 }).then(build => {
