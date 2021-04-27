@@ -1,15 +1,16 @@
 {
     "name": "rollup-plugin-probe",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "",
     "main": "lib/cjs/index.js",
     "module": "lib/es/index.js",
-    "types": "types/index.d.ts",
+    "types": "lib/types/index.d.ts",
     "scripts": {
         "dev": "rollup -c rollup.config.ts -w",
         "build": "rollup -c rollup.config.ts",
         "build:example": "ts-node --project tsconfig.dev.json example/index.ts",
-        "build:types": "tsc"
+        "build:types": "tsc",
+        "push": "npm run build && tsc && npm publish"
     },
     "keywords": [],
     "author": "",
