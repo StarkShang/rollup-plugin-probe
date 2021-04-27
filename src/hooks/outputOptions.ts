@@ -17,7 +17,7 @@ export function outputOptionsProbe(
             <h4 style="margin:0.5em 0 0">${key}</h4>
             ${getValueInfo((options as Record<string, any>)[key])}
         </div>`;
-    });
+    }).reduce((rst, prop) => rst + prop,"");
     reporter.append(`
         <section style="box-shadow:0 0 3px 0 #ccc;border-radius:6px;padding:1em;margin:1em">
             ${describeHookMetaInfo("Output Options Hook")}

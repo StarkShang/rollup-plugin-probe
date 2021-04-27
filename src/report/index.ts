@@ -7,7 +7,7 @@ export function getValueInfo(value: any) {
         return `<ul style="margin:0"><li>${value}</li></ul>`;
     } else if (Array.isArray(value)) {
         return `
-        <ul>
+        <ul style="margin:0">
             ${value.map(i => `<li>${i}</li>`)}
         </ul>`;
     } else if (value) {

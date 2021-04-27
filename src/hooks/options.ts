@@ -1,8 +1,7 @@
-import { InputOption, InputOptions, MinimalPluginContext, Plugin } from "rollup";
-import moment from "moment";
-import { Reporter, getValueInfo } from "../report";
-import { describePlugins } from "../report/plugin.describer";
+import { InputOptions, MinimalPluginContext } from "rollup";
+import { Reporter } from "../report";
 import { describeHookMetaInfo } from "../report/hook.describer";
+import { describeInputOptions } from "../report/inputOptions.describer";
 
 export interface OptionsProbeOptions {
 
@@ -16,16 +15,7 @@ export function optionsProbe(
     reporter.append(`
         <section style="box-shadow:0 0 3px 0 #ccc;border-radius:6px;padding:1em;margin:1em">
             ${describeHookMetaInfo("Options Hook")}
-            ${getInputInfo(options.input)}
-            ${describePlugins(options.plugins)}
+            ${describeInputOptions(options)}
         </section>
     `);
-}
-
-function getInputInfo(input?: InputOption) {
-    return `
-    <div>
-        <h4 style="margin:0.5em 0 0">input</h4>
-        ${getValueInfo(input)}
-    </div>`;
 }

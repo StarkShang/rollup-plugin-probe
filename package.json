@@ -8,7 +8,7 @@
     "scripts": {
         "dev": "rollup -c rollup.config.ts -w",
         "build": "rollup -c rollup.config.ts",
-        "build:example": "ts-node --project tsconfig.dev.json example/index.ts",
+        "build:example": "ts-node --project tsconfig.dev.json examples/simple/index.ts",
         "build:types": "tsc",
         "push": "npm run build && tsc && npm publish"
     },

@@ -2,11 +2,11 @@ import { Plugin } from "rollup";
 
 export function describePlugins(plugins?: Plugin[]) {
     const infos = plugins
-        ?.map(plugin => `<li style="line-height:2em">${describePlugin(plugin)}</li>`)
+        ?.map(plugin => `<li style="line-height:1.6em">${describePlugin(plugin)}</li>`)
         ?.reduce((desc, info) => desc + info, "");
     return `
         <h4 style="margin:0.5em 0 0">plugins</h4>
-        <ul style="margin:0">${infos}</ul>
+        <ul style="margin:0;font-size:0.8em">${infos}</ul>
     `;
 }
 

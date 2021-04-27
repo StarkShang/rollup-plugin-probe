@@ -1,6 +1,6 @@
 import { rollup } from "rollup";
 import path from "path";
-import probe from "../src";
+import probe from "../../src";
 
 rollup({
     input: path.resolve(__dirname, "src/main.ts"),

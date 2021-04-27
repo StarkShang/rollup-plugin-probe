@@ -130,7 +130,7 @@ export default function(
         },
         renderChunk(code, chunk, options) {
             if (_options?.hooks?.renderChunk) {
-                renderChunkProbe.call(this, code, chunk, options);
+                renderChunkProbe.call(this, _reporter, code, chunk, options);
             }
             return null;
         },
@@ -143,12 +143,12 @@ export default function(
             if (_options?.hooks?.generateBundle) {
                 generateBundleProbe.call(this, options, bundle, isWrite, _reporter);
             }
-            await _reporter.output();
         },
         async writeBundle(options, bundle) {
             if (_options?.hooks?.writeBundle) {
-                writeBundleProbe.call(this, options, bundle);
+                writeBundleProbe.call(this, _reporter, options, bundle);
             }
+            await _reporter.output();
         }
     }
 }
