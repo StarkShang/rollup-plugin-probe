@@ -4,8 +4,8 @@ import { describeBooleanValue } from "./boolean.describer";
 export function describeOutputOptions(options: NormalizedOutputOptions) {
     return `
         <section>
-            <h4>output options</h4>
-            ${descirbeBooleanInfos(options)}
+            <h4 style="margin-bottom:0">OUTPUT OPTIONS</h4>
+            ${describeBooleanInfos(options)}
             <div>dir: ${options.dir}</div>
             <div>format: ${options.format}</div>
             <div>exports: ${options.exports}</div>
@@ -16,7 +16,7 @@ export function describeOutputOptions(options: NormalizedOutputOptions) {
     `;
 }
 
-export function descirbeBooleanInfos(options: NormalizedOutputOptions) {
+export function describeBooleanInfos(options: NormalizedOutputOptions) {
     return `
         <div>
             ${describeBooleanValue("compact", options.compact)}

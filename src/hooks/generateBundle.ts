@@ -3,6 +3,7 @@ import { Reporter } from "../report";
 import { describeBundle } from "../report/bundle.describer";
 import { ChunkDescriber } from "../report/chunk.describer";
 import { describeHookMetaInfo } from "../report/hook.describer";
+import { describeOutputOptions } from "../report/outputOptions.describer";
 
 export interface GenerateBundleProbeOptions {
 
@@ -18,6 +19,7 @@ export function generateBundleProbe(
     reporter.append(`
         <section style="box-shadow:0 0 3px 0 #ccc;border-radius:6px;padding:1em;margin:1em">
             ${describeHookMetaInfo("Generate Bundle Hook")}
+            ${describeOutputOptions(options)}
             ${describeBundle(bundle, reporter)}
         </section>
     `);

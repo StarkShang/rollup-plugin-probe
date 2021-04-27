@@ -130,7 +130,7 @@ export default function(
         },
         renderChunk(code, chunk, options) {
             if (_options?.hooks?.renderChunk) {
-                renderChunkProbe.call(this, code, chunk, options);
+                renderChunkProbe.call(this, _reporter, code, chunk, options);
             }
             return null;
         },

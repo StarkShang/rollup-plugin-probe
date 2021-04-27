@@ -1,12 +1,12 @@
-import { OutputAsset, OutputBundle, OutputChunk } from "rollup";
+import { OutputAsset, OutputBundle, OutputChunk, RenderedChunk } from "rollup";
 import { Reporter } from ".";
 import { ChunkDescriber } from "./chunk.describer";
 
 export function describeBundle(bundle: OutputBundle, reporter: Reporter) {
     const bundleInfo = Object.keys(bundle).reduce((rst, key) => {
         switch (bundle[key].type) {
-            case "chunk": rst.chunks += describeChunk(key, bundle[key] as OutputChunk, reporter); break;
-            case "asset": rst.assets += describeAsset(key, bundle[key] as OutputAsset, reporter); break;
+            case "chunk": rst.chunks += describeChunk(bundle[key] as OutputChunk, reporter); break;
+            case "asset": rst.assets += describeAsset(bundle[key] as OutputAsset, reporter); break;
             default: break;
         }
         return rst;
@@ -24,7 +24,7 @@ export function describeBundle(bundle: OutputBundle, reporter: Reporter) {
     `;
 }
 
-export function describeChunk(key: string, chunk: OutputChunk, reporter: Reporter) {
+export function describeChunk(chunk: OutputChunk | RenderedChunk, reporter: Reporter) {
     const describer = new ChunkDescriber(chunk);
     reporter.registerDescriber(describer);
     getChunkDetail(chunk, describer);
@@ -88,9 +88,9 @@ export function describeChunk(key: string, chunk: OutputChunk, reporter: Reporte
     `;
 }
 
-export function describeAsset(key: string, asset: OutputAsset, reporter: Reporter) {
+export function describeAsset(asset: OutputAsset, reporter: Reporter) {
     const source = typeof asset.source === "string"
-        ?  asset.source.replace(/</g, "&lt").replace(/>/g, "&gt")
+        ? asset.source.replace(/</g, "&lt").replace(/>/g, "&gt")
         : asset.source;
     return `
         <div style="margin-top:0.5em">
@@ -115,7 +115,7 @@ export function describeAsset(key: string, asset: OutputAsset, reporter: Reporte
     `;
 }
 
-function getChunkDetail(chunk: OutputChunk, describer: ChunkDescriber) {
+function getChunkDetail(chunk: OutputChunk | RenderedChunk, describer: ChunkDescriber) {
     const importInfo = chunk.imports.map(imp => `
         <span>${imp}</span>: [${chunk.importedBindings[imp].join(", ")}]
     `).reduce((rst, imp) => rst + imp, "");
