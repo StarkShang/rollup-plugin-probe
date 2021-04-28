@@ -56,13 +56,25 @@ export default function(
         },
         transform(code, id) {
             if (_options?.hooks?.transform) {
-                transformProbe.call(this, code, id, _reporter);
+                if (_options.hooks.transform.match) {
+                    if (_options.hooks.transform.match.test(id)) {
+                        transformProbe.call(this, code, id, _reporter);
+                    }
+                } else {
+                    transformProbe.call(this, code, id, _reporter);
+                }
             }
             return null;
         },
-        moduleParsed(info) {
+        moduleParsed(module) {
             if (_options?.hooks?.moduleParsed) {
-                moduleParsedProbe.call(this, info);
+                if (_options.hooks.moduleParsed.match) {
+                    if (_options.hooks.moduleParsed.match.test(module.id)) {
+                        moduleParsedProbe.call(this, _reporter, module);
+                    }
+                } else {
+                    moduleParsedProbe.call(this, _reporter, module);
+                }
             }
         },
         resolveDynamicImport(specifier, importer) {

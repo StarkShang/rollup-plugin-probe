@@ -1,6 +1,7 @@
 import { OutputAsset, OutputBundle, OutputChunk, RenderedChunk } from "rollup";
 import { Reporter } from ".";
 import { ChunkDescriber } from "./chunk.describer";
+import { describeCode } from "./code.describer";
 
 export function describeBundle(bundle: OutputBundle, reporter: Reporter) {
     const bundleInfo = Object.keys(bundle).reduce((rst, key) => {
@@ -50,7 +51,7 @@ export function describeChunk(chunk: OutputChunk | RenderedChunk, reporter: Repo
         </div>
         <div>
             <div style="font-weight:700">modules</div>
-            <ul style="margin:0;font-size:0.8em">
+            <ul style="margin:0;font-size:0.8em;max-height:10em;overflow-y:auto">
                 ${Object.keys(chunk.modules).map(key => "<li>" + key + "</li>").join("")}
             </ul>
         </div>
@@ -83,7 +84,7 @@ export function describeChunk(chunk: OutputChunk | RenderedChunk, reporter: Repo
         </div>
         <div>
             <div style="font-weight:700">code</div>
-            <code style="display:block;max-height:10em;overflow-y:auto;padding:1em;background:#efefef;word-break:break-all;border-radius:3px">${chunk.code}</code>
+            ${describeCode(chunk.code||"")}
         </div>
     `;
 }
@@ -91,7 +92,7 @@ export function describeChunk(chunk: OutputChunk | RenderedChunk, reporter: Repo
 export function describeAsset(asset: OutputAsset, reporter: Reporter) {
     const source = typeof asset.source === "string"
         ? asset.source.replace(/</g, "&lt").replace(/>/g, "&gt")
-        : asset.source;
+        : "二进制文件";
     return `
         <div style="margin-top:0.5em">
             <div>
@@ -106,9 +107,7 @@ export function describeAsset(asset: OutputAsset, reporter: Reporter) {
             </div>
             <div>
                 <span style="font-weight:700">source</span>
-                <code style="display:block;max-height:10em;overflow-y:auto;padding:1em;background:#efefef;word-break:break-all;border-radius:3px">
-                    ${source}
-                </code>
+                ${describeCode(source)}
             </div>
         </div>
 
