@@ -50,7 +50,13 @@ export default function(
         },
         load(id: string) {
             if (_options?.hooks?.load) {
-                loadProbe.call(this, id);
+                if (_options.hooks.load.match) {
+                    if (_options.hooks.load.match.test(id)) {
+                        loadProbe.call(this, _reporter, id);
+                    }
+                } else {
+                    loadProbe.call(this, _reporter, id);
+                }
             }
             return null;
         },

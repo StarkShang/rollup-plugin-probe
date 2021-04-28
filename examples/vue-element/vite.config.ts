@@ -11,6 +11,9 @@ export default defineConfig({
                 hooks: {
                     options: {},
                     buildStart: {},
+                    load: {
+                        match: /\.(css|woff|tff)/
+                    },
                     transform: {
                         match: /\.(css|woff|tff)/
                     },
