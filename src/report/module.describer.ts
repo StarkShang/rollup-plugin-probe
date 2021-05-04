@@ -4,9 +4,6 @@ import { describeCode } from "./code.describer";
 import { describeListSection } from "./list.describer";
 
 export function describeModule(module: ModuleInfo) {
-    // console.log(module);
-    // console.log(module.importedIds);
-    // console.log("meta", module.meta);
     return `
         <h4 style="margin:0">
             <span style="background:#FFA754;color:white;border-radius:4px;margin-right:0.5em;padding:0.1em 0.5em">source</span>

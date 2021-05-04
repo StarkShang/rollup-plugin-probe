@@ -2,7 +2,7 @@ import { promises, existsSync, mkdirSync } from "fs";
 import { parse, resolve } from "path";
 import { Describer } from "./describer";
 
-export function getValueInfo(value: any) {
+export function getValueInfo(value: any): string | undefined {
     if (typeof value === "string") {
         return `<ul style="margin:0"><li>${value}</li></ul>`;
     } else if (Array.isArray(value)) {

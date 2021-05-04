@@ -7,7 +7,7 @@
     "types": "lib/types/index.d.ts",
     "scripts": {
         "dev": "rollup -c rollup.config.ts -w",
-        "build": "rollup -c rollup.config.ts",
+        "build": "rollup -c rollup.config.js",
         "build:example": "ts-node --project tsconfig.dev.json examples/simple/index.ts",
         "build:types": "tsc",
         "push": "npm run build && tsc && npm publish"
@@ -21,12 +21,16 @@
         "moment": "^2.29.1"
     },
     "devDependencies": {
+        "@babel/core": "^7.14.0",
+        "@babel/preset-env": "^7.14.1",
+        "@babel/preset-typescript": "^7.13.0",
+        "@rollup/plugin-babel": "^5.3.0",
+        "@rollup/plugin-node-resolve": "^11.2.1",
         "@types/node": "^14.14.41",
         "rollup": "^2.45.2",
         "rollup-plugin-cleanup": "^3.2.1",
         "rollup-plugin-empty": "^1.0.0",
         "rollup-plugin-node-resolve": "^5.2.0",
-        "rollup-plugin-typescript2": "^0.30.0",
         "ts-node": "^9.1.1",
         "tslib": "^2.2.0",
         "typescript": "^4.2.4"

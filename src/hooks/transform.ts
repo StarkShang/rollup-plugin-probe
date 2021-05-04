@@ -7,10 +7,14 @@ export interface TransformProbeOptions {
     match?: RegExp;  // regex to match files
 }
 
+export interface TransformHookContext {
+    context: TransformPluginContext;
+    code: string;
+    id: string;
+}
+
 export function transformProbe(
-    this: TransformPluginContext,
-    code: string,
-    id: string,
+    context: TransformHookContext,
     reporter: Reporter,
 ) {
     reporter.append(`
@@ -18,9 +22,9 @@ export function transformProbe(
             ${describeHookMetaInfo("Transform Hook")}
             <h4 style="margin:0.5em 0 0">
                 <span style="background:#FFA754;color:white;border-radius:4px;margin-right:0.5em;padding:0.1em 0.5em">source</span>
-                ${id}
+                ${context.id}
             </h4>
-            ${describeCode(code)}
+            ${describeCode(context.code)}
         </section>
     `);
 }

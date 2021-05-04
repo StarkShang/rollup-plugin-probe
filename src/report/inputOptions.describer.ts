@@ -2,7 +2,7 @@ import { InputOption, InputOptions, NormalizedInputOptions } from "rollup";
 import { getValueInfo } from ".";
 import { describePlugins } from "./plugin.describer";
 
-export function describeInputOptions(options: InputOptions | NormalizedInputOptions) {
+export function describeInputOptions(options: InputOptions | NormalizedInputOptions): string {
     return `
         <section>
             <h4>input options</h4>
@@ -14,7 +14,7 @@ export function describeInputOptions(options: InputOptions | NormalizedInputOpti
     `;
 }
 
-function describeInput(input?: InputOption) {
+function describeInput(input?: InputOption): string {
     return `
     <div>
         <h4 style="margin:0.5em 0 0">input</h4>

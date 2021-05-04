@@ -1,6 +1,7 @@
-import { join } from "path";
+import { join, dirname } from "path";
 import { Plugin } from "rollup";
 import { normalizeOptions, ProbeOptions } from "./options";
+import { Reporter } from "./report";
 import { buildStartProbe } from "./hooks/buildStart";
 import { closeBundleProbe } from "./hooks/closeBundle";
 import { renderStartProbe } from "./hooks/renderStart";
@@ -22,7 +23,6 @@ import { augmentChunkHashProbe } from "./hooks/augmentChunkHash";
 import { resolveFileUrlProbe } from "./hooks/resolveFileUrl";
 import { resolveImportMetaProbe } from "./hooks/resolveImportMeta";
 import { outputOptionsProbe } from "./hooks/outputOptions";
-import { Reporter } from "./report";
 
 export default function(
     inputOptions?: ProbeOptions
@@ -31,9 +31,9 @@ export default function(
     const _reporter = new Reporter();
     return {
         name: "rollup-probe",
-        options(options) {
+        async options(options) {
             if (_options?.hooks?.options) {
-                optionsProbe.call(this, options, _reporter);
+                await optionsProbe.call(this, options, _reporter);
             }
             return options;
         },
@@ -50,24 +50,18 @@ export default function(
         },
         load(id: string) {
             if (_options?.hooks?.load) {
-                if (_options.hooks.load.match) {
-                    if (_options.hooks.load.match.test(id)) {
-                        loadProbe.call(this, _reporter, id);
-                    }
-                } else {
-                    loadProbe.call(this, _reporter, id);
+                const matcher = _options.hooks.load.match;
+                if (!matcher || matcher.test(id)) {
+                    loadProbe({ context: this, id }, _reporter);
                 }
             }
             return null;
         },
         transform(code, id) {
             if (_options?.hooks?.transform) {
-                if (_options.hooks.transform.match) {
-                    if (_options.hooks.transform.match.test(id)) {
-                        transformProbe.call(this, code, id, _reporter);
-                    }
-                } else {
-                    transformProbe.call(this, code, id, _reporter);
+                const matcher = _options.hooks.transform.match;
+                if (!matcher || matcher.test(id)) {
+                    transformProbe({ context: this, code, id }, _reporter);
                 }
             }
             return null;
@@ -110,9 +104,6 @@ export default function(
             }
         },
         outputOptions(options) {
-            if (options.dir) {
-                _reporter.setOutputPath(join(options.dir, _options.output));
-            }
             if (_options?.hooks?.outputOption) {
                 outputOptionsProbe.call(this, options, _reporter);
             }
@@ -159,12 +150,19 @@ export default function(
         },
         async generateBundle(options, bundle, isWrite) {
             if (_options?.hooks?.generateBundle) {
-                generateBundleProbe.call(this, options, bundle, isWrite, _reporter);
+                generateBundleProbe({ context: this, options, bundle, isWrite}, _reporter, _options.hooks.generateBundle);
             }
         },
         async writeBundle(options, bundle) {
             if (_options?.hooks?.writeBundle) {
                 writeBundleProbe.call(this, _reporter, options, bundle);
+            }
+            if (options.dir) {
+                _reporter.setOutputPath(join(options.dir, _options.output));
+            } else if (options.file) {
+                _reporter.setOutputPath(join(dirname(options.file), _options.output));
+            } else if (options.name) {
+                _reporter.setOutputPath(join(dirname(options.name), _options.output));
             }
             await _reporter.output();
         }

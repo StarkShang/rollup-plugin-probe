@@ -3,24 +3,35 @@ import { Reporter } from ".";
 import { ChunkDescriber } from "./chunk.describer";
 import { describeCode } from "./code.describer";
 
-export function describeBundle(bundle: OutputBundle, reporter: Reporter) {
+export interface BundleDescriberOptions {
+    hideAsset?: boolean;
+    hideChunk?: boolean;
+}
+
+export function describeBundle(bundle: OutputBundle, reporter: Reporter, options?: BundleDescriberOptions) {
     const bundleInfo = Object.keys(bundle).reduce((rst, key) => {
         switch (bundle[key].type) {
-            case "chunk": rst.chunks += describeChunk(bundle[key] as OutputChunk, reporter); break;
-            case "asset": rst.assets += describeAsset(bundle[key] as OutputAsset, reporter); break;
+            case "chunk":
+                if (!options || !options.hideChunk) {
+                    rst.chunks += describeChunk(bundle[key] as OutputChunk, reporter);
+                }
+                break;
+            case "asset":
+                if (!options || !options.hideAsset) {
+                    rst.assets += describeAsset(bundle[key] as OutputAsset, reporter);
+                }
+                break;
             default: break;
         }
         return rst;
     }, { chunks: "", assets: "" });
+    const chunkInfo = options?.hideChunk ? "" : `<div>${bundleInfo.chunks}</div>`;
+    const assetInfo = options?.hideAsset ? "" : `<div>${bundleInfo.assets}</div>`;
     return `
         <section>
             <h4 style="margin-bottom:0">BUNDLE</h4>
-            <div>
-                ${bundleInfo.chunks}
-            </div>
-            <div>
-                ${bundleInfo.assets}
-            </div>
+            ${chunkInfo}
+            ${assetInfo}
         </section>
     `;
 }
