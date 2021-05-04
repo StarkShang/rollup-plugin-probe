@@ -1,5 +1,6 @@
 import { babel } from "@rollup/plugin-babel";
 import nodeResolve from "@rollup/plugin-node-resolve";
+import commonjs from "@rollup/plugin-commonjs";
 // @ts-ignore
 import { DEFAULT_EXTENSIONS } from "@babel/core";
 // @ts-ignore
@@ -13,18 +14,18 @@ const extensions = [...DEFAULT_EXTENSIONS, ".ts"];
 export default [
     {
         input: "src/index.ts",
-        external: ["moment", "cheerio"],
+        external: ["moment", "cheerio", "@babel/runtime/regenerator"],
         plugins: [
             empty({ silent: false, dir: "lib" }),
+            babel({
+                exclude: "node_modules/**",
+                extensions,
+            }),
             nodeResolve({
                 extensions,
                 modulesOnly: true,
             }),
-            babel({
-                exclude: "node_modules/**",
-                extensions,
-                babelHelpers: "bundled",
-            }),
+            commonjs(),
             probe({
                 hooks: {
                     options: {},
@@ -41,10 +42,17 @@ export default [
             }),
             cleanup(),
         ],
-        output: [
-            { file: pkg.main, format: "cjs", exports: "auto" },
-            { file: pkg.module, format: "es", exports: "auto" }
-        ],
+        output: [{
+            file: pkg.main,
+            format: "cjs",
+            exports: "auto",
+            sourcemap: true,
+        }, {
+            file: pkg.module,
+            format: "es",
+            exports: "auto",
+            sourcemap: true,
+        }],
         watch: {
             include: ["src/**/*"]
         }
